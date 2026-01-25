@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+:root {
+  /* Deep Charcoal - Text/Headings */
+  --color-primary-dark: #1a1a1a;
+  /* Soft Gold - Buttons/Accents */
+  --color-accent-gold: #C5A059;
+  /* Off-white/Cream - Background */
+  --color-bg-cream: #FDFBF7;
+  
+  --background: var(--color-bg-cream);
+  --foreground: var(--color-primary-dark);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--color-primary-dark);
+  --color-accent: var(--color-accent-gold);
+  
+  /* Expose specific color names as utility classes */
+  --color-primary-dark: var(--color-primary-dark);
+  --color-accent-gold: var(--color-accent-gold);
+  --color-bg-cream: var(--color-bg-cream);
+  
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-playfair);
+
+  --animate-fade-in-up: fade-in-up 0.8s ease-out forwards;
+
+  @keyframes fade-in-up {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+/* Force light/cream theme to match specific design request */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--color-bg-cream);
+    --foreground: var(--color-primary-dark);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+}
+
+/* Utility to hide elements initially if needed, though Tailwind handles this via keyframes usually */
+.opacity-0 {
+  opacity: 0;
+}
