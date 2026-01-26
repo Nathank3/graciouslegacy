@@ -48,9 +48,12 @@ export default function Navbar() {
               {link.name}
             </Link>
           ))}
-          <button className="bg-primary-dark text-white px-6 py-2.5 text-sm font-medium rounded hover:bg-black transition-colors">
+          <Link
+            href="#contact"
+            className="bg-primary-dark text-white px-6 py-2.5 text-sm font-medium rounded hover:bg-black transition-colors"
+          >
             Book Consultation
-          </button>
+          </Link>
         </div>
 
         {/* Mobile Menu Toggle */}
@@ -76,9 +79,13 @@ export default function Navbar() {
                 {link.name}
               </Link>
             ))}
-            <button className="bg-primary-dark text-white px-6 py-3 text-sm font-medium rounded w-full">
+            <Link
+              href="#contact"
+              className="bg-primary-dark text-white px-6 py-3 text-sm font-medium rounded w-full text-center"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
               Book Consultation
-            </button>
+            </Link>
           </div>
         </div>
       )}
