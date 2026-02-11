@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Playfair_Display } from "next/font/google"; // Using standard google fonts import
+import SplashScreen from "@/components/SplashScreen";
 import "./globals.css";
 
 // Mobile optimization
@@ -253,6 +254,7 @@ export default function RootLayout({
         className={`${inter.variable} ${playfair.variable} antialiased font-sans text-gray-900`}
         suppressHydrationWarning={true}
       >
+        <SplashScreen />
         {children}
       </body>
     </html>
