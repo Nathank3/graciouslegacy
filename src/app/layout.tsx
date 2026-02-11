@@ -221,7 +221,7 @@ export const metadata: Metadata = {
     creator: "@gracemithamo", // Ideally replace with actual handle if known
   },
   verification: {
-    google: "google-site-verification=YOUR_GOOGLE_VERIFICATION_CODE", // Pivot to user instructions for this
+    google: "3Lyl4l6cgWdQGaevOv4q1MOfA61MPMC29xS-n2f00MA",
     // yandex: "yandex-verification=...",
     // bing: "bing-verification=...", 
   },
