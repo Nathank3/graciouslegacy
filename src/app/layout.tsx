@@ -27,7 +27,7 @@ const playfair = Playfair_Display({
 // Robust Metadata Configuration
 // Robust Metadata Configuration
 export const metadata: Metadata = {
-  metadataBase: new URL("https://grace-mithamo-portfolio.vercel.app"), // Fallback/Placeholder URL. Ideally use process.env.NEXT_PUBLIC_BASE_URL
+  metadataBase: new URL("https://graciouslegacy.vercel.app"), // Fallback/Placeholder URL. Ideally use process.env.NEXT_PUBLIC_BASE_URL
   title: {
     default: "Grace Mithamo | Public Relations & Administrative Specialist",
     template: "%s | Grace Mithamo",
@@ -194,13 +194,13 @@ export const metadata: Metadata = {
     "CYO",
     "CZO"
   ],
-  authors: [{ name: "Grace Mithamo", url: "https://grace-mithamo-portfolio.vercel.app" }],
+  authors: [{ name: "Grace Mithamo", url: "https://graciouslegacy.vercel.app" }],
   creator: "Grace Mithamo",
   publisher: "Grace Mithamo",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://grace-mithamo-portfolio.vercel.app",
+    url: "https://graciouslegacy.vercel.app",
     title: "Grace Mithamo | Polished PR & Executive Support",
     description: "From editorial writing to complex project management—I handle the details so you can focus on the big picture. Discover professional virtual assistance and PR services.",
     siteName: "Grace Mithamo Portfolio",
@@ -239,7 +239,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://grace-mithamo-portfolio.vercel.app",
+    canonical: "https://graciouslegacy.vercel.app",
   },
 };
 
