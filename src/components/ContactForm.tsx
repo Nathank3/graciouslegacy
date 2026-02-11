@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
+import emailjs from '@emailjs/browser';
 
 export default function ContactForm() {
   const [formData, setFormData] = useState({
@@ -12,7 +13,36 @@ export default function ContactForm() {
     message: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [status, setStatus] = useState<{
+    submitting: boolean;
+    info: { error: boolean; msg: string | null };
+  }>({
+    submitting: false,
+    info: { error: false, msg: null },
+  });
+
+  const handleServerResponse = (ok: boolean, msg: string | null) => {
+    if (ok) {
+      setStatus({
+        submitting: false,
+        info: { error: false, msg: msg },
+      });
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        service: "",
+        message: ""
+      });
+    } else {
+      setStatus({
+        info: { error: true, msg: msg },
+        submitting: false,
+      });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic Validation
@@ -28,13 +58,44 @@ export default function ContactForm() {
       return;
     }
 
-    const subject = `Inquiry from ${formData.name} - ${formData.service}`;
-    const body = `Name: ${formData.name}%0D%0AEmail: ${formData.email}%0D%0ACompany: ${formData.company}%0D%0AService: ${formData.service}%0D%0A%0D%0AMessage:%0D%0A${formData.message}`;
-    
-    window.location.href = `mailto:ndindamithamo@gmail.com?subject=${encodeURIComponent(subject)}&body=${body}`; // No encodeURIComponent for body here to keep it simple, or careful with newlines. 
-    // Actually, safer to encode all.
-    // window.open(\`mailto:ndindamithamo@gmail.com?subject=\${encodeURIComponent(subject)}&body=\${encodeURIComponent(body)}\`);
+    setStatus((prevStatus) => ({ ...prevStatus, submitting: true }));
+
+    try {
+      // Basic check for configured environment variables
+      if (!process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || 
+          !process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || 
+          !process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY) {
+        throw new Error("EmailJS service is not fully configured. Please check your environment variables.");
+      }
+
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,
+        {
+            // Parameters matching common template variables: definition {{name}}, {{email}}, etc.
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            service: formData.service,
+            message: formData.message,
+            time: new Date().toLocaleString(),
+            
+            // Fallbacks for default templates
+            from_name: formData.name,
+            from_email: formData.email,
+            reply_to: formData.email,
+            to_name: "Admin", 
+        },
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
+      );
+
+      handleServerResponse(true, "Thank you, your message has been sent.");
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      handleServerResponse(false, "Failed to send message. Please try again later.");
+    }
   };
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({
@@ -106,6 +167,7 @@ export default function ContactForm() {
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold outline-none transition-all"
                     placeholder="Your Name"
+                    disabled={status.submitting}
                   />
                 </div>
                 <div className="space-y-2">
@@ -120,6 +182,7 @@ export default function ContactForm() {
                     onChange={handleChange}
                     className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold outline-none transition-all"
                     placeholder="john@company.com"
+                    disabled={status.submitting}
                   />
                 </div>
               </div>
@@ -135,6 +198,7 @@ export default function ContactForm() {
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold outline-none transition-all"
                   placeholder="Company Name (Optional)"
+                  disabled={status.submitting}
                 />
               </div>
 
@@ -147,6 +211,7 @@ export default function ContactForm() {
                   value={formData.service}
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold outline-none transition-all bg-white"
+                  disabled={status.submitting}
                 >
                   <option value="" disabled>Select a service...</option>
                   
@@ -173,14 +238,22 @@ export default function ContactForm() {
                   onChange={handleChange}
                   className="w-full px-4 py-3 rounded-lg border border-gray-200 focus:border-accent-gold focus:ring-1 focus:ring-accent-gold outline-none transition-all resize-none"
                   placeholder="Tell us about your project..."
+                  disabled={status.submitting}
                 ></textarea>
               </div>
 
+              {status.info.msg && (
+                <div className={`p-4 rounded-lg text-center ${status.info.error ? "bg-red-100 text-red-700" : "bg-green-100 text-green-700"}`}>
+                  {status.info.msg}
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full bg-accent-gold text-white font-bold py-4 rounded-lg hover:bg-[#b08d4a] transition-colors flex items-center justify-center gap-2"
+                disabled={status.submitting}
+                className="w-full bg-accent-gold text-white font-bold py-4 rounded-lg hover:bg-[#b08d4a] transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Send Message <Send size={18} />
+                {status.submitting ? "Sending..." : "Send Message"} <Send size={18} />
               </button>
             </form>
           </div>
