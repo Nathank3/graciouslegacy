@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
  
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://agency-website-delta.vercel.app' // Ideally this should be an environment variable
+  const baseUrl = 'https://grace-mithamo-portfolio.vercel.app' // Ideally this should be an environment variable
 
   return [
     {
