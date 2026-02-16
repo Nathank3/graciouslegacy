@@ -8,8 +8,8 @@ import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Home | Grace Mithamo - PR & Admin Specialist",
-  description: "Elevate your business with professional Public Relations and Executive Administrative support. Based in Nairobi, serving clients globally.",
+  title: "Home | Grace Mithamo - PR Specialist & Executive Support",
+  description: "Elevate your business with professional PR, corporate writing, virtual assistance, and brand management services. Based in Nairobi, serving clients globally.",
 };
 
 export default function Home() {
